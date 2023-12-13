@@ -17,7 +17,6 @@ KafkaConfig KafkaConfig::FromFile(const std::string_view file)
 
     json data = json::parse(fp);
 
-
     for (auto key : requiredKeys)
         if (!data.contains(key.data()))
         {
@@ -30,3 +29,19 @@ KafkaConfig KafkaConfig::FromFile(const std::string_view file)
 
     
 
+KafkaProducer::KafkaProducer(KafkaConfig config) : Config(config), Builder(config.Topic), mProducer({
+                { "metadata.broker.list", config.Broker }
+        })
+        {
+        }
+
+void KafkaProducer::Stream(std::vector<std::string> messages)
+{
+    for (auto message : messages)
+    {   
+        this->Builder.payload(message);
+        this->mProducer.produce(this->Builder);
+    }
+
+    this->mProducer.flush();
+}
