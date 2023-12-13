@@ -43,6 +43,9 @@ enable_testing()
 add_executable(test_basic tests/test_basic.cpp)
 target_link_libraries(test_basic GTest::gtest_main libParallelCalc)
 
+add_executable(test_factorial tests/test_factorial.cpp)
+target_link_libraries(test_factorial GTest::gtest_main libParallelCalc)
+
 include(GoogleTest)
 
 gtest_discover_tests(test_basic)
