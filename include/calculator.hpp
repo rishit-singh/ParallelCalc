@@ -1,4 +1,5 @@
 #include <gmpxx.h>
+#include <vector>
 #include <map>
 #include <mutex>
 #include <thread>

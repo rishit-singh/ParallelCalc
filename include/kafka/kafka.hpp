@@ -1,5 +1,5 @@
-// #include <cppkafka/cppkafka.h>
-// #include <cppkafka/configuration.h>
+#include <cppkafka/cppkafka.h>
+#include <cppkafka/configuration.h>
 #include <nlohmann/json.hpp>
 #include <stdexcept>
 #include <fstream>
