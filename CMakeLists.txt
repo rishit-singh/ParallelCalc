@@ -31,6 +31,13 @@ FetchContent_Declare(
     URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz
 )
 
+# Fetch dependancy: Spdlog
+FetchContent_Declare(
+    spdlog
+    GIT_REPOSITORY https://github.com/gabime/spdlog
+    GIT_TAG        v1.12.0
+)
+
 # Fetch dependancy: CppKafka
 set(CPPKAFKA_DISABLE_EXAMPLES ON CACHE INTERNAL "Turn off examples")
 set(CPPKAFKA_DISABLE_TESTS ON CACHE INTERNAL "Turn off tests")
@@ -50,6 +57,7 @@ FetchContent_MakeAvailable(json)
 #kafka
 FetchContent_MakeAvailable(librdkafka)
 FetchContent_MakeAvailable(CppKafka)
+FetchContent_MakeAvailable(spdlog)
 # GMP for bignum dependencies
 find_package(GMP REQUIRED)
 
@@ -60,24 +68,25 @@ file(GLOB Kafka_SOURCES src/kafka/*.cpp)
 # lib for all the calculator sources
 add_library(libParallelCalc ${ParallelCalc_SOURCES})
 target_include_directories(libParallelCalc PUBLIC include/)
-target_link_libraries(libParallelCalc PUBLIC GMP::GMP rdkafka cppkafka nlohmann_json::nlohmann_json)
+target_link_libraries(libParallelCalc PUBLIC spdlog::spdlog GMP::GMP rdkafka cppkafka nlohmann_json::nlohmann_json)
 
 add_library(kafka ${Kafka_SOURCES})
 target_include_directories(kafka PUBLIC include/kafka)
-target_link_libraries(kafka PUBLIC rdkafka cppkafka nlohmann_json::nlohmann_json)
+target_link_libraries(kafka PUBLIC spdlog::spdlog rdkafka cppkafka nlohmann_json::nlohmann_json)
 
 add_executable(ParallelCalc src/main.cpp)
 target_include_directories(ParallelCalc PRIVATE include/)
-target_link_libraries(ParallelCalc libParallelCalc kafka rdkafka cppkafka nlohmann_json::nlohmann_json ) 
+target_link_libraries(ParallelCalc spdlog::spdlog libParallelCalc kafka rdkafka cppkafka nlohmann_json::nlohmann_json ) 
 
 add_executable(ParallelProducer src/application/producer.cpp)
 target_include_directories(ParallelProducer PRIVATE include/)
-target_link_libraries(ParallelProducer libParallelCalc kafka rdkafka cppkafka nlohmann_json::nlohmann_json ) 
+target_link_libraries(ParallelProducer spdlog::spdlog libParallelCalc kafka rdkafka cppkafka nlohmann_json::nlohmann_json ) 
 
 
 add_executable(ParallelConsumer src/application/consumer.cpp)
 target_include_directories(ParallelConsumer PRIVATE include/)
-target_link_libraries(ParallelConsumer libParallelCalc kafka rdkafka cppkafka nlohmann_json::nlohmann_json ) 
+target_link_libraries(ParallelConsumer spdlog::spdlog libParallelCalc kafka rdkafka cppkafka nlohmann_json::nlohmann_json ) 
+
 
 # build tests
 

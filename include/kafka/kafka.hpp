@@ -2,6 +2,7 @@
 #include <cppkafka/cppkafka.h>
 #include <cppkafka/configuration.h>
 #include <nlohmann/json.hpp>
+#include <spdlog/spdlog.h>
 #include <vector>
 #include <string>
 #include <string_view>
@@ -40,12 +41,15 @@ struct KafkaConfig
     /// @brief Delay in ms for each call of each consumer poll
     size_t PollDelay;
 
+    /// @brief File to write the logs to
+    std::string LogFile;
+
     /// @brief Loads the config from a file 
     /// @param File path 
     /// @return Loaded config
     static KafkaConfig FromFile(const std::string_view);
 
-    KafkaConfig(std::string = nullptr, std::string = nullptr, const size_t = 0, std::string = nullptr, const size_t = DefaultPollDelay);
+    KafkaConfig(std::string = nullptr, std::string = nullptr, const size_t = 0, std::string = nullptr, const size_t = DefaultPollDelay, std::string = nullptr);
 };
 
 /// @brief Producer abstraction
@@ -61,12 +65,15 @@ private:
     /// @brief Producer instance
     Producer mProducer;
 
+    /// @brief Pointer to a logger instance
+    std::shared_ptr<spdlog::logger> Logger;
+
 public:
     /// @brief Streams the given messages to the broker
     /// @param messages to stream 
     void Stream(std::vector<std::string>);
 
-    KafkaProducer(KafkaConfig);
+    KafkaProducer(KafkaConfig, std::shared_ptr<spdlog::logger> = nullptr);
 };
 
 /// @brief Consumer abstraction
@@ -85,14 +92,17 @@ private:
     /// @brief Running state
     bool IsRunning;
 
+    /// @brief Pointer to a logger instance
+    std::shared_ptr<spdlog::logger> Logger;
+
 public: 
     /// @brief Runs the consumer loop
     void Run();
-    
+
     /// @brief Sets OnReceiveCallback to the given value 
     /// @param callback Callback to set  
     void SetOnReceiveCallback(std::function<void(const Message&)>);
 
-    KafkaConsumer(KafkaConfig);
+    KafkaConsumer(KafkaConfig, std::shared_ptr<spdlog::logger> = nullptr);
 };
 
