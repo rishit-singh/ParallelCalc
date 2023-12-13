@@ -27,6 +27,7 @@ find_package(GMP REQUIRED)
 file(GLOB ParallelCalc_SOURCES src/*.cpp)
 file(GLOB Test_SOURCES tests/*.cpp)
 
+# lib for all the calculator sources
 add_library(libParallelCalc ${ParallelCalc_SOURCES} src/calculator.cpp)
 target_include_directories(libParallelCalc PUBLIC include/)
 target_link_libraries(libParallelCalc PUBLIC GMP::GMP)
@@ -35,7 +36,9 @@ add_executable(ParallelCalc src/main.cpp)
 target_include_directories(ParallelCalc PRIVATE include/)
 target_link_libraries(ParallelCalc libParallelCalc) 
 
-enable_testing(true)
+# build tests
+
+enable_testing()
 
 add_executable(test_basic tests/test_basic.cpp)
 target_link_libraries(test_basic GTest::gtest_main libParallelCalc)

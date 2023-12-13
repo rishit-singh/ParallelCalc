@@ -1,8 +1,8 @@
+#include <gmpxx.h>
+
 namespace ParallelCalc
 {
     /// @brief Calculator class with basic arithemic operations
-    /// @tparam T Type of the operands
-    template<typename T>     
     class Calculator
     {
     public:
@@ -10,25 +10,25 @@ namespace ParallelCalc
         /// @param left Left operand
         /// @param right Right operand
         /// @return Operation result 
-        T Add(T, T);
+        mpz_class Add(const mpz_class&, const mpz_class&);
 
         /// @brief Subtracts two operands
         /// @param left Left operand
         /// @param right Right operand
         /// @return Operation result 
-        T Subtract(T, T);
+        mpz_class Subtract(const mpz_class&, const mpz_class&);
         
         /// @brief Multiplies two operands
         /// @param left Left operand
         /// @param right Right operand
         /// @return Operation result 
-        T Multiply(T, T);
+        mpz_class Multiply(const mpz_class&, const mpz_class&);
         
         /// @brief Divides two operands
         /// @param left Left operand
         /// @param right Right operand
         /// @return Operation result 
-        T Divide(T, T);
+        mpz_class Divide(const mpz_class&, const mpz_class&);
 
         /// @brief Default construtor
         Calculator() = default;
@@ -38,26 +38,3 @@ namespace ParallelCalc
     };
 } 
 
-template<typename T> 
-T ParallelCalc::Calculator<T>::Add(T left, T right) 
-{
-    return left + right;
-}
-
-template<typename T> 
-T ParallelCalc::Calculator<T>::Subtract(T left, T right) 
-{
-    return left - right;
-}
-
-template<typename T> 
-T ParallelCalc::Calculator<T>::Multiply(T left, T right) 
-{
-    return left * right;
-}
-
-template<typename T> 
-T ParallelCalc::Calculator<T>::Divide(T left, T right) 
-{
-    return left / right;
-}
