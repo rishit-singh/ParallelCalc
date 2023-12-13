@@ -60,7 +60,7 @@ file(GLOB Kafka_SOURCES src/kafka/*.cpp)
 # lib for all the calculator sources
 add_library(libParallelCalc ${ParallelCalc_SOURCES})
 target_include_directories(libParallelCalc PUBLIC include/)
-target_link_libraries(libParallelCalc PUBLIC GMP::GMP)
+target_link_libraries(libParallelCalc PUBLIC GMP::GMP rdkafka cppkafka nlohmann_json::nlohmann_json)
 
 add_library(kafka ${Kafka_SOURCES})
 target_include_directories(kafka PUBLIC include/kafka)
