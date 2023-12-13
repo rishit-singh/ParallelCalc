@@ -33,8 +33,6 @@ mpz_class ParallelCalc::Calculator::FactorialSingle(const mpz_class& start, cons
 
     std::lock_guard<std::mutex> lock(this->FactorialResultMutex); // lock the mutex before modifying the shared result
 
-    // std::cout << "start: " << start.get_str() << ", end: " << end.get_str() << " result: " << result.get_str() << '\n';
-
     this->FactorialResult *= result;
 
     return result;
@@ -44,16 +42,12 @@ mpz_class ParallelCalc::Calculator::Factorial(const mpz_class& number)
 {
     this->FactorialResult = 1;
 
-
-
     const size_t numThreads = std::thread::hardware_concurrency();
 
     mpz_class chunkSize = number / numThreads; // get chunk size based on the available system threads
 
     if (chunkSize == 0)
         chunkSize = 1;
-
-    // std::cout << "Chunk size: " << chunkSize.get_str() << '\n';
 
     this->FactorialThreadPool.clear();
     this->FactorialThreadPool.reserve(numThreads);

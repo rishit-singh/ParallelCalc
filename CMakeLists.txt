@@ -11,30 +11,64 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/opt/local/include/SDL2 -Wall -D_THREA
 
 include(FetchContent)
 
+# Fetch dependancy for CppKafka: librdkafka
+set(RDKAFKA_BUILD_EXAMPLES OFF ON CACHE INTERNAL "Turn off examples")
+set(RDKAFKA_BUILD_TESTS OFF CACHE INTERNAL "Turn off tests")
+
+FetchContent_Declare(
+    librdkafka
+    GIT_REPOSITORY https://github.com/confluentinc/librdkafka
+    GIT_TAG        v2.3.0
+)
+
 FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+)
+
+FetchContent_Declare(
+    json
+    URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz
+)
+
+# Fetch dependancy: CppKafka
+set(CPPKAFKA_DISABLE_EXAMPLES ON CACHE INTERNAL "Turn off examples")
+set(CPPKAFKA_DISABLE_TESTS ON CACHE INTERNAL "Turn off tests")
+
+FetchContent_Declare(
+    CppKafka
+    GIT_REPOSITORY https://github.com/mfontanini/cppkafka.git
+    GIT_TAG        v0.3.1
 )
 
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 # gtest for testing
 FetchContent_MakeAvailable(googletest)
-
+#json for json loading
+FetchContent_MakeAvailable(json)
+#kafka
+FetchContent_MakeAvailable(librdkafka)
+FetchContent_MakeAvailable(CppKafka)
 # GMP for bignum dependencies
 find_package(GMP REQUIRED)
- 
+
 file(GLOB ParallelCalc_SOURCES src/*.cpp)
 file(GLOB Test_SOURCES tests/*.cpp)
+file(GLOB Kafka_SOURCES src/kafka/*.cpp)
 
 # lib for all the calculator sources
-add_library(libParallelCalc ${ParallelCalc_SOURCES} src/calculator.cpp)
+add_library(libParallelCalc ${ParallelCalc_SOURCES})
 target_include_directories(libParallelCalc PUBLIC include/)
 target_link_libraries(libParallelCalc PUBLIC GMP::GMP)
 
+add_library(kafka ${Kafka_SOURCES})
+target_include_directories(kafka PUBLIC include/kafka)
+target_link_libraries(kafka PUBLIC rdkafka cppkafka nlohmann_json::nlohmann_json)
+
 add_executable(ParallelCalc src/main.cpp)
 target_include_directories(ParallelCalc PRIVATE include/)
-target_link_libraries(ParallelCalc libParallelCalc) 
+target_link_libraries(ParallelCalc libParallelCalc rdkafka cppkafka nlohmann_json::nlohmann_json ) 
 
 # build tests
 

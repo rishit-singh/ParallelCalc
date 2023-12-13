@@ -35,6 +35,7 @@ namespace ParallelCalc
         /// @return Factorial result
         mpz_class FactorialParallel(const mpz_class&, const mpz_class&);
 
+        /// @brief Threads to execute factorial in
         std::vector<std::thread> FactorialThreadPool;    
     public:
         /// @brief Adds two operands
