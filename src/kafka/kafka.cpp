@@ -39,13 +39,16 @@ KafkaProducer::KafkaProducer(KafkaConfig config) : Config(config), Builder(confi
                 { "metadata.broker.list", config.Broker }
         })
         {
+            this->Builder.partition(config.Partition);
         }
 
 void KafkaProducer::Stream(std::vector<std::string> messages)
 {
     for (auto message : messages)
-    {   
+    {  
+
         this->Builder.payload(message);
+        std::cout << message << "\n";
         this->mProducer.produce(this->Builder);
     }
 
@@ -86,6 +89,8 @@ KafkaConsumer::KafkaConsumer(KafkaConfig config)
 void KafkaConsumer::Run()
 {
     this->mConsumer.subscribe({this->Config.Topic});
+
+    this->IsRunning = true;
 
     while (this->IsRunning)
     {

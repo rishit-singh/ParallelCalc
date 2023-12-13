@@ -70,6 +70,15 @@ add_executable(ParallelCalc src/main.cpp)
 target_include_directories(ParallelCalc PRIVATE include/)
 target_link_libraries(ParallelCalc libParallelCalc kafka rdkafka cppkafka nlohmann_json::nlohmann_json ) 
 
+add_executable(ParallelProducer src/application/producer.cpp)
+target_include_directories(ParallelProducer PRIVATE include/)
+target_link_libraries(ParallelProducer libParallelCalc kafka rdkafka cppkafka nlohmann_json::nlohmann_json ) 
+
+
+add_executable(ParallelConsumer src/application/consumer.cpp)
+target_include_directories(ParallelConsumer PRIVATE include/)
+target_link_libraries(ParallelConsumer libParallelCalc kafka rdkafka cppkafka nlohmann_json::nlohmann_json ) 
+
 # build tests
 
 enable_testing()
