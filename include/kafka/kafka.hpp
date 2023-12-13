@@ -16,12 +16,12 @@ struct KafkaConfig
     std::string_view Topic;
 
     /// @brief Topic partition
-    std::string_view Partition;
+    size_t Partition;
 
     /// @brief Loads the config from a file 
     /// @param File path 
     /// @return Loaded config
     static KafkaConfig FromFile(const std::string_view);
 
-    KafkaConfig(std::string_view = nullptr, std::string_view = nullptr, std::string_view = nullptr);
+    KafkaConfig(std::string_view = nullptr, std::string_view = nullptr, size_t = 0);
 };

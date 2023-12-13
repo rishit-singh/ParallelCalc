@@ -68,7 +68,7 @@ target_link_libraries(kafka PUBLIC rdkafka cppkafka nlohmann_json::nlohmann_json
 
 add_executable(ParallelCalc src/main.cpp)
 target_include_directories(ParallelCalc PRIVATE include/)
-target_link_libraries(ParallelCalc libParallelCalc rdkafka cppkafka nlohmann_json::nlohmann_json ) 
+target_link_libraries(ParallelCalc libParallelCalc kafka rdkafka cppkafka nlohmann_json::nlohmann_json ) 
 
 # build tests
 

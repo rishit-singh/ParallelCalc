@@ -1,14 +1,12 @@
 #include "kafka.hpp"
 
-KafkaConfig::KafkaConfig(std::string_view broker, std::string_view topic, std::string_view partition)
+KafkaConfig::KafkaConfig(std::string_view broker, std::string_view topic, size_t partition)
     : Broker(broker), Topic(topic), Partition(partition)
 {
 }
 
 KafkaConfig KafkaConfig::FromFile(const std::string_view file)
 {
-    KafkaConfig config;
-
     std::ifstream fp(file.data());
 
     std::array<std::string_view, 3> requiredKeys = {
@@ -19,6 +17,7 @@ KafkaConfig KafkaConfig::FromFile(const std::string_view file)
 
     json data = json::parse(fp);
 
+
     for (auto key : requiredKeys)
         if (!data.contains(key.data()))
         {
@@ -26,6 +25,8 @@ KafkaConfig KafkaConfig::FromFile(const std::string_view file)
             throw std::runtime_error(error + " is required but not provided in the config.");
         }
 
-    return KafkaConfig(data["broker"], data["topic"], data["partition"]); 
+    return KafkaConfig(data["broker"].template get<std::string_view>(), data["topic"].template get<std::string_view>(), static_cast<size_t>(data["partition"])); 
 }
+
+    
 
