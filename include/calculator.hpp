@@ -1,3 +1,6 @@
+#ifndef CALCULATOR_H
+#define CALCULATOR_H
+
 #include <gmpxx.h>
 #include <vector>
 #include <map>
@@ -76,3 +79,4 @@ namespace ParallelCalc
     };
 } 
 
+#endif

@@ -1,3 +1,6 @@
+#ifndef KAFKA_H
+#define KAFKA_H
+
 #include <cppkafka/producer.h> 
 #include <cppkafka/cppkafka.h>
 #include <cppkafka/configuration.h>
@@ -105,3 +108,4 @@ public:
     KafkaConsumer(KafkaConfig, std::shared_ptr<spdlog::logger> = nullptr);
 };
 
+#endif

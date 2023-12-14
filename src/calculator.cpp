@@ -51,8 +51,6 @@ mpz_class ParallelCalc::Calculator::Factorial(const mpz_class& number)
     this->FactorialThreadPool.clear();
     this->FactorialThreadPool.reserve(numThreads);
 
-    size_t index = 0;
-
     for (mpz_class x = number; x > 1; x -= chunkSize)
     {
         mpz_class start = x, end = x - chunkSize;
