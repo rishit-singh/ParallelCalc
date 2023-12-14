@@ -33,12 +33,12 @@ make;
 All config should be placed in a json file in the following format:
 ```json
 {
-    "broker": "URL", // broker url
-    "topic": "some_topic", // kafka topic
-    "partition": 0, // partion id
-    "group_id": "some_group", // group id for the consumer
-    "poll_delay": 1, // delay before each message poll on the consumer
-    "log_file": ".logs" /// file to write the logs to
+    "broker": "URL", /* broker url*/
+    "topic": "some_topic", /* kafka topic*/
+    "partition": 0, /* partion id */
+    "group_id": "some_group", /* group id for the consumer */
+    "poll_delay": 1, /* delay before each message poll on the consumer */
+    "log_file": ".logs" /* file to write the logs to */
 }
 ```
 
@@ -60,7 +60,7 @@ All config should be placed in a json file in the following format:
 
 The library provides a simple configurable abstraction of Kafka boilerplate that makes it easier to integrate streaming with the existing services, which in this case is the calculator.
 
-####KafkaProducer
+#### KafkaProducer
 ```cpp
 KafkaConfig config = KafkaConfig::FromFile("config.json"); // load the config
 
