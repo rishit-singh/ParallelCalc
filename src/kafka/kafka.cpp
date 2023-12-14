@@ -50,6 +50,8 @@ void KafkaProducer::Stream(std::vector<std::string> messages)
     {  
         this->Builder.payload(message);
         this->mProducer.produce(this->Builder);
+
+        this->Logger->info("Streamed: " + message);
     }
 
     this->mProducer.flush();
@@ -73,8 +75,6 @@ KafkaConsumer::KafkaConsumer(KafkaConfig config, std::shared_ptr<spdlog::logger>
 
             if (!logger)
                 logger->info(ss.str());
-            std::cout << ss.str();
-			// logger->info(ss.str());
 		});
 
     this->mConsumer.set_revocation_callback([logger](const cppkafka::TopicPartitionList& partitions) {
@@ -97,7 +97,24 @@ void KafkaConsumer::Run()
     {
         Message message = this->mConsumer.poll(std::chrono::milliseconds{this->Config.PollDelay});
 
-        this->OnReceiveCallback(message);
+        if (message)
+        {
+            if (message.get_error())
+            {
+                if (!message.is_eof())
+                {
+                    std::stringstream stream;
+
+                    stream << "Received error: " << message.get_payload();
+                    this->Logger->critical(stream.str());
+                }
+            }
+            else
+            {
+                this->OnReceiveCallback(message);
+                this->mConsumer.commit(message); 
+            }
+        }
     }
 }
 

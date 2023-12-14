@@ -1,5 +1,4 @@
 #include <calculator.hpp>
-#include <iostream>
 
 mpz_class ParallelCalc::Calculator::Add(const mpz_class& left, const mpz_class& right) 
 {
