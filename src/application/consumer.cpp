@@ -5,6 +5,11 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <iostream>
 
+/// @brief Handles the given dispatch for calculator operations
+/// @param dispatch Dispatch json object
+/// @param calculator Calculator instance 
+/// @param logger Logger instance
+/// @param outFile File to output the results to
 void HandleDispatch(json dispatch, ParallelCalc::Calculator& calculator, std::shared_ptr<spdlog::logger> logger, std::string_view outFile)
 {
     const std::string operation = dispatch["action"].template get<std::string>();
