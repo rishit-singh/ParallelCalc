@@ -21,6 +21,9 @@ The application utilizes Kafka's producers and consumers to performing Calculato
 
 The consumer then processes these dispatches when they're received and uses the Calculator class to perform the requested operation on the provided operands.
 
+![Design drawio](https://github.com/rishit-singh/ParallelCalc/assets/47594390/b9736717-f927-4cbf-88d3-d8519459c1f9)
+
+
 Calculator currently supports the following opertions
 ```
 ADD - Add two big ints.
