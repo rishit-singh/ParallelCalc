@@ -1,6 +1,36 @@
 # ParallelCalc
 A C++20 based high perf multithreaded calculator compatible with Apache Kafka.
 
+## How does it work? 
+
+The application consists of two elements, the **Calculator** and the **Kafka streams**. 
+
+### Calculator
+
+The Calculator is a multithreaded class that can perform all basic arithematic operations on two high precision big integers. The special thing about it is that it optimized the factorial calculation by splitting the input into smaller ranges and then leveraging the available threads on the system to calculate factorials on each of those ranges. Each thread writes its factorial result to a shared result protected by mutex locks.
+
+
+### Kafka streams
+
+The application utilizes Kafka's producers and consumers to performing Calculator operations on streams. The producer dispatches operations in form of JSON strings like following: 
+```json 
+{"action":"MUL","left":5,"right":5} /* dispatches multiplication of 5 by 5*/
+
+{"action":"FAC","left":5} /* dispatches factorial of 5*/
+```
+
+The consumer then processes these dispatches when they're received and uses the Calculator class to perform the requested operation on the provided operands.
+
+Calculator currently supports the following opertions
+```
+ADD - Add two big ints.
+SUB - Subtract a big int from another.
+MUL - Multiply two big ints.
+DIV - Divide a big int with another.
+FAC - Calculate the factorial for a big int.
+```
+
+
 ## Dependencies
 
 ### cppkafka
