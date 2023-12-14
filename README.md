@@ -84,7 +84,7 @@ auto logger = make_shared<spdlog::logger>(...); // create a logger with the desi
 KafkaConsumer consumer(KafkaConfig::FromFile(argv[1]), logger); // create the consumer
 
 
-consumer.SetOnReceiveCallback([logger, &calculator, &outputFile](const Message& message) {
+consumer.SetOnReceiveCallback([](const Message& message) {
     /// utilize the message
 }); // set the callback to handle each message, called every poll
 
